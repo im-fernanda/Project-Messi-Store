@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@WebServlet("/carrinhoServlet")
+//@WebServlet("/carrinhoServlet")
 public class CarrinhoController {
     @RequestMapping(value = "/carrinhoServlet", method = RequestMethod.POST)
     protected void doTratarPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
