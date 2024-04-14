@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+</head>
+<body>
+<h1>Novo Cadastro</h1>
+<form action="/doCadastro" method="post">
+    <label for="nome">Nome</label> <input type="text" name="nome" id="nome"> </br>
+    <label for="email">Email</label> <input type="email" name="email" id="email"> </br>
+    <label for="senha">Senha</label> <input type="password" name="senha" id="senha"> </br>
+    <button type="submit">Cadastrar</button>
+</form>
+
+<a href="/index.html">Voltar ao login</a>
+
+</body>
+</html>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const senha = document.getElementById('senha').value.trim();
+
+        if (!nome || !email || !senha) {
+            alert('Por favor, preencha todos os campos.');
+            event.preventDefault(); // Impede o envio do formulário
+        }
+    });
+</script>

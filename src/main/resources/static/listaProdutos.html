@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos</title>
+</head>
+<body>
+<h1>Lista de Produtos</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th>Estoque</th>
+        <th>Adicionar ao Carrinho</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="produto : ${produtos}">
+        <td th:text="${produto.nome}"></td>
+        <td th:text="${produto.descricao}"></td>
+        <td th:text="${produto.preco}"></td>
+        <td th:text="${produto.estoque}"></td>
+        <td><a th:href="@{'/adicionarAoCarrinho?id=' + ${produto.id}}">Adicionar</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/carrinho">Ver Carrinho de Compras</a>
+</body>
+</html>

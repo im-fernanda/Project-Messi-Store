@@ -1,0 +1,70 @@
+package ufrn.projloja.persistencia;
+
+import java.sql.*;
+
+import ufrn.projloja.classes.Cliente;
+
+public class ClienteDAO {
+    private Conexao con;
+    private String CAD = "INSERT INTO Clientes (nome, login, senha) VALUES (?, ?, ?)";
+    private String PRO = "SELECT * FROM Clientes WHERE login=? AND senha=?";
+
+    public ClienteDAO() {
+        con = new Conexao("jdbc:postgresql://localhost:5432/db_loja", "postgres", "2005");
+    }
+
+    public void cadastrar(Cliente c) {
+        try {
+            con.conectar();
+            PreparedStatement ps = con.getConexao().prepareStatement(CAD);
+            ps.setString(1, c.getNome());
+            ps.setString(2, c.getLogin());
+            ps.setString(3, c.getSenha());
+            ps.execute();
+            con.desconectar();
+        } catch (Exception e) {
+            System.out.println("Erro na inclusão: " + e.getMessage());
+        }
+    }
+
+    public boolean procurar(Cliente c) {
+        boolean achou = false;
+        Connection connection = null;
+        PreparedStatement p = null;
+        ResultSet rs = null;
+
+        try {
+            con.conectar();
+            PreparedStatement ps = con.getConexao().prepareStatement(PRO);
+            ps.setString(1, c.getLogin());
+            ps.setString(2, c.getSenha());
+
+            rs = ps.executeQuery();
+            if(rs.next()){
+                achou = true;
+            }
+            con.desconectar();
+        } catch(Exception e){
+            System.out.println("Erro na busca: " + e.getMessage());
+        }
+        return achou;
+    }
+
+    public Integer selecionarId(Cliente c) {
+        Integer id = null;
+        try{
+            con.conectar();
+            PreparedStatement ps = con.getConexao().prepareStatement(PRO);
+            ps.setString(1, c.getLogin());
+            ps.setString(2, c.getSenha());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                id = rs.getInt("id");
+            }
+            con.desconectar();
+        }catch(Exception e){
+            System.out.println("Erro na busca: " + e.getMessage());
+        }
+        return id;
+    }
+}
