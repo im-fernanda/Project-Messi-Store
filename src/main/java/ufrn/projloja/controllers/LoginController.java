@@ -18,7 +18,7 @@ public class LoginController {
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     public void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var login = request.getParameter("login");
+        var login = request.getParameter("email");
         var senha = request.getParameter("senha");
 
         ClienteDAO cDAO = new ClienteDAO();
@@ -29,19 +29,17 @@ public class LoginController {
 
         System.out.println("Cliente existe: " + cliente_existe);
         System.out.println("Lojista existe: " + lojista_existe);
-        if(cliente_existe){
+
+        if(cliente_existe && !lojista_existe){
             HttpSession session = request.getSession(true);
             session.setAttribute("clienteLogado", true);
 
             response.sendRedirect("home_cliente.html");
-            return;
-        } else if (lojista_existe) {
+        } else if (lojista_existe  && !cliente_existe) {
             HttpSession session = request.getSession(true);
             session.setAttribute("lojistaLogado", true);
 
             response.sendRedirect("home_lojista.html");
-
-            return;
         }
         else {
             response.sendRedirect("index.html?msg=Login falhou");
