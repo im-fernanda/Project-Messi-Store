@@ -7,7 +7,7 @@ import ufrn.projloja.classes.Cliente;
 public class ClienteDAO {
     private Conexao con;
     private String CAD = "INSERT INTO Clientes (nome, login, senha) VALUES (?, ?, ?)";
-    private String PRO = "SELECT * FROM Clientes WHERE login=? AND senha=?";
+    private String PROCURAR = "SELECT * FROM Clientes WHERE login=? AND senha=?";
 
     public ClienteDAO() {
         con = new Conexao("jdbc:postgresql://localhost:5432/db_loja", "postgres", "2005");
@@ -27,15 +27,16 @@ public class ClienteDAO {
         }
     }
 
-    public boolean procurar(Cliente c) {
+    public boolean procurar(String login, String senha) {
         boolean achou = false;
         Connection connection = null;
         PreparedStatement p = null;
         ResultSet rs = null;
+        Cliente c = new Cliente(login, senha);
 
         try {
             con.conectar();
-            PreparedStatement ps = con.getConexao().prepareStatement(PRO);
+            PreparedStatement ps = con.getConexao().prepareStatement(PROCURAR);
             ps.setString(1, c.getLogin());
             ps.setString(2, c.getSenha());
 
@@ -47,6 +48,9 @@ public class ClienteDAO {
         } catch(Exception e){
             System.out.println("Erro na busca: " + e.getMessage());
         }
+        if(c != null){
+            return true;
+        }
         return achou;
     }
 
@@ -54,7 +58,7 @@ public class ClienteDAO {
         Integer id = null;
         try{
             con.conectar();
-            PreparedStatement ps = con.getConexao().prepareStatement(PRO);
+            PreparedStatement ps = con.getConexao().prepareStatement(PROCURAR);
             ps.setString(1, c.getLogin());
             ps.setString(2, c.getSenha());
             ResultSet rs = ps.executeQuery();
@@ -62,7 +66,7 @@ public class ClienteDAO {
                 id = rs.getInt("id");
             }
             con.desconectar();
-        }catch(Exception e){
+        } catch(Exception e){
             System.out.println("Erro na busca: " + e.getMessage());
         }
         return id;

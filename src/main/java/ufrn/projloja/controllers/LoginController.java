@@ -23,19 +23,23 @@ public class LoginController {
 
         ClienteDAO cDAO = new ClienteDAO();
         LojistaDAO lDAO = new LojistaDAO();
-        Cliente c = new Cliente(login, senha);
-        Lojista l = new Lojista(login, senha);
 
-        if(cDAO.procurar(c)){
-            HttpSession session = request.getSession();
+        boolean cliente_existe = cDAO.procurar(login, senha);
+        boolean lojista_existe = lDAO.procurar(login, senha);
+
+
+        if(cliente_existe){
+            HttpSession session = request.getSession(true);
             session.setAttribute("logado", true);
 
             response.sendRedirect("home_cliente.html");
-        } else if (lDAO.procurar(l)) {
-            HttpSession session = request.getSession();
+            return;
+        } else if (lojista_existe) {
+            HttpSession session = request.getSession(true);
             session.setAttribute("logado", true);
 
             response.sendRedirect("home_lojista.html");
+            return;
         }
         else {
             response.sendRedirect("index.html?msg=Login falhou");
