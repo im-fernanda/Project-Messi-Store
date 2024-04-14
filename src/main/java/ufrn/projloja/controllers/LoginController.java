@@ -27,20 +27,20 @@ public class LoginController {
         Cliente cliente = cDAO.procurar(login, senha);
         Lojista lojista = lDAO.procurar(login, senha);
 
-        if(cliente != null){
+        if (cliente != null || lojista != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("clienteLogado", true);
 
-            response.sendRedirect("home_cliente.html");
-        } else if (lojista != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("lojistaLogado", true);
-
-            response.sendRedirect("home_lojista.html");
-        }
-        else {
+            if (cliente != null) {
+                session.setAttribute("clienteLogado", true);
+                response.sendRedirect("home_cliente.html");
+            } else {
+                session.setAttribute("lojistaLogado", true);
+                response.sendRedirect("home_lojista.html");
+            }
+        } else {
             response.sendRedirect("index.html?msg=Login falhou");
         }
+
     }
 
     @RequestMapping(value="/logout")

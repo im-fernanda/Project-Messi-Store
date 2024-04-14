@@ -29,7 +29,6 @@ public class ProdutoController {
         p.setQuantidade(quantidade);
         pd.addProduto(p);
 
-
-
     }
+
 }

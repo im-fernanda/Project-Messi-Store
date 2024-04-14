@@ -50,12 +50,7 @@ public class ListaProdutosController {
         writer.println("</table>");
 
 
-        writer.println("<form action=\"/verCarrinho\" method=\"get\" style=\"text-align: center;\">");
-        writer.println("<button type=\"submit\">Ver Carrinho</button>");
-        writer.println("</form>");
-
         writer.println("</body> </html>");
-
 
     }
 
