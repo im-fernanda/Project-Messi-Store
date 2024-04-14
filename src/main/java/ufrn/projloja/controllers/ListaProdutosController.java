@@ -43,10 +43,16 @@ public class ListaProdutosController {
             writer.println("<td>" + produto.getNome() + "</td>");
             writer.println("<td>" + produto.getDescricao() + "</td>");
             writer.println("<td>R$ " + decimalFormat.format(produto.getPreco()) + "</td>");
-            writer.println("<td>" + produto.getQuantidade() + "</td>");
-            writer.println("<td><a href='http://localhost:8080/carrinhoServlet?id=" + produto.getId() + "&comando=add' title='http://localhost:8080/carrinhoServlet?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
+            if (produto.getQuantidade() == 0){
+                writer.println("<td>Sem Estoque</td>");
+            } else {
+                writer.println("<td>" + produto.getQuantidade() + "</td>");
+            }
+            writer.println("<td><a href='/carrinhoServlet/" + produto.getId() + "/add' title='http://localhost:8080/carrinhoServlet?id=\" + produto.getId() + \"?comando=add'>Adicionar</a></td>");
+            //writer.println("<td><a href='carrinhoServlet/id=" + produto.getId() + "/comando=add' title='http://localhost:8080/carrinhoServlet?id=" + produto.getId() + "?comando=add'>Adicionar</a></td>");
             writer.println("</tr>");
         }
+
         writer.println("<tr>");
         writer.println("<td colspan=\"5\" style=\"text-align: center;\">");
         writer.println("<button onclick=\"window.location.href='verCarrinho'\">Ver Carrinho</button>");
@@ -84,7 +90,11 @@ public class ListaProdutosController {
             writer.println("<td>" + produto.getNome() + "</td>");
             writer.println("<td>" + produto.getDescricao() + "</td>");
             writer.println("<td>R$ " + decimalFormat.format(produto.getPreco()) + "</td>");
-            writer.println("<td>" + produto.getQuantidade() + "</td>");
+            if (produto.getQuantidade() == 0){
+                writer.println("<td>Sem Estoque</td>");
+            } else {
+                writer.println("<td>" + produto.getQuantidade() + "</td>");
+            }
             writer.println("</tr>");
         }
         writer.println("<tr>");

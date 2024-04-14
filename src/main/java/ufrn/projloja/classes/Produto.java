@@ -1,5 +1,7 @@
 package ufrn.projloja.classes;
 
+import ufrn.projloja.persistencia.ProdutoDAO;
+
 public class Produto {
     private int id;
     private String nome;
@@ -60,5 +62,10 @@ public class Produto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Produto getProdutoPorId(int id) {
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        return produtoDAO.getProdutoPorId(id);
     }
 }

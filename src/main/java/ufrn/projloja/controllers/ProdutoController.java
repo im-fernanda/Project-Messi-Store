@@ -28,7 +28,9 @@ public class ProdutoController {
         p.setPreco(preco);
         p.setQuantidade(quantidade);
         pd.addProduto(p);
-
+        response.sendRedirect("home_lojista.html?msg=Produto add com sucesso");
     }
+
+
 
 }
