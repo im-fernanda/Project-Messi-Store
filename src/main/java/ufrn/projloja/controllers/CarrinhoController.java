@@ -1,5 +1,6 @@
 package ufrn.projloja.controllers;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,13 +17,16 @@ import java.util.List;
 public class CarrinhoController {
 
     @RequestMapping(value = "/addAoCarrinho", method = RequestMethod.GET)
-    public void adicionarAoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void adicionarAoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         List<Produto> carrinho = new ArrayList<>();
         // Simulando a adição de um produto ao carrinho
         String produtoId = request.getParameter("id");
         Produto produto = buscarProdutoPorId(Integer.parseInt(produtoId));
         if (produto != null) {
             carrinho.add(produto);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/listarProdutos");
+            dispatcher.forward(request, response);
         }
 
     }

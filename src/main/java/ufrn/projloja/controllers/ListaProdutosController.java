@@ -44,8 +44,9 @@ public class ListaProdutosController {
             writer.println("<td>" + produto.getDescricao() + "</td>");
             writer.println("<td>R$ " + decimalFormat.format(produto.getPreco()) + "</td>");
             writer.println("<td>" + produto.getQuantidade() + "</td>");
-            writer.println("<td><a href='http://localhost:8080/ProjLoja/addAoCarrinho?id=" + produto.getId() + "&comando=add' title='http://localhost:8080/ProjLoja/addAoCarrinho?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
+            writer.println("<td><a href='http://localhost:8080/addAoCarrinho?id=" + produto.getId() + "&comando=add' title='http://localhost:8080/addAoCarrinho?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
             writer.println("</tr>");
+
         }
 
         writer.println("</body> </html>");
