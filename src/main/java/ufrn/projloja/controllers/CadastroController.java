@@ -16,16 +16,16 @@ public class CadastroController {
     @RequestMapping(value = "/doCadastro", method = RequestMethod.POST)
     public void doCadastro(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var nome = request.getParameter("nome");
-        var email = request.getParameter("email");
+        var login = request.getParameter("login");
         var senha = request.getParameter("senha");
 
         ClienteDAO cDAO = new ClienteDAO();
-        Cliente c = new Cliente(nome, email, senha);
+        Cliente c = new Cliente(nome, login, senha);
         try{
             cDAO.cadastrar(c);
             response.sendRedirect("cadastro.html?msg=Cadastrado com sucesso!");
-           // return ResponseEntity.ok("Cadastro realizado com sucesso!");
-        }catch(Exception e){
+            // return ResponseEntity.ok("Cadastro realizado com sucesso!");
+        } catch(Exception e){
             System.out.println(e.getMessage());
             response.sendRedirect("cadastro.html?msg=Erro no cadastro");
         }

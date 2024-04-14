@@ -10,9 +10,10 @@ public class Lojista {
         this.id = id;
     }
 
-    public Lojista(String login, String senha) {
+    public Lojista(String login, String senha, String nome) {
         this.login = login;
         this.senha = senha;
+        this.nome = nome;
     }
 
     public int getId() {

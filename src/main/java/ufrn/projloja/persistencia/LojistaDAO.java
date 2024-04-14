@@ -15,27 +15,24 @@ public class LojistaDAO {
         con = new Conexao("jdbc:postgresql://localhost:5432/db_loja", "postgres", "2005");
     }
 
-    public boolean procurar(String login, String senha) {
-        boolean achou = false;
-        Connection connection = null;
-        PreparedStatement p = null;
+    public Lojista procurar(String login, String senha) {
         ResultSet rs = null;
-        Lojista l = new Lojista(login, senha);
+        Lojista l = null;
 
         try{
             con.conectar();
             PreparedStatement ps = con.getConexao().prepareStatement(PRO);
-            ps.setString(1, l.getLogin());
-            ps.setString(2, l.getSenha());
+            ps.setString(1, login);
+            ps.setString(2, senha);
             rs = ps.executeQuery();
 
             if(rs.next()){
-                achou = true;
+                l = new Lojista(rs.getString("login"), rs.getString("senha"), rs.getString("nome"));
             }
             con.desconectar();
         }catch(Exception e){
             System.out.println("Erro na busca: " + e.getMessage());
         }
-        return achou;
+        return l;
     }
 }

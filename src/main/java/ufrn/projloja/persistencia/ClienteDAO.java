@@ -27,31 +27,26 @@ public class ClienteDAO {
         }
     }
 
-    public boolean procurar(String login, String senha) {
-        boolean achou = false;
-        Connection connection = null;
-        PreparedStatement p = null;
+    public Cliente procurar(String login, String senha) {
         ResultSet rs = null;
-        Cliente c = new Cliente(login, senha);
+        Cliente c = null;
 
         try {
             con.conectar();
             PreparedStatement ps = con.getConexao().prepareStatement(PROCURAR);
-            ps.setString(1, c.getLogin());
-            ps.setString(2, c.getSenha());
+            ps.setString(1, login);
+            ps.setString(2, senha);
 
             rs = ps.executeQuery();
             if(rs.next()){
-                achou = true;
+                c = new Cliente(rs.getString("nome"), rs.getString("login"), rs.getString("senha"));
             }
             con.desconectar();
         } catch(Exception e){
             System.out.println("Erro na busca: " + e.getMessage());
         }
-        if(c != null){
-            return true;
-        }
-        return achou;
+
+        return c;
     }
 
     public Integer selecionarId(Cliente c) {
