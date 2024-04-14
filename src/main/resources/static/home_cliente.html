@@ -26,32 +26,11 @@
 
 <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0;">
 <head>
-    <h1>Bem vindo, nome cliente!</h1>
+    <h1>Bem vindo!</h1>
 </head>
 
-<h2>Lista de Produtos</h2>
 
-<table>
-    <thead>
-    <tr>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Preço</th>
-        <th>Estoque</th>
-        <th>Adicionar ao Carrinho</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="produto : ${produtos}">
-        <td th:text="${produto.nome}"></td>
-        <td th:text="${produto.descricao}"></td>
-        <td th:text="${produto.preco}"></td>
-        <td th:text="${produto.estoque}"></td>
-        <td><a th:href="@{'/adicionarAoCarrinho?id=' + ${produto.id}}">Adicionar</a></td>
-    </tr>
-    </tbody>
-</table>
-
+<a href="/listarProdutos">Ver lista de produtos</a>
 <a href="/verCarrinho">Ver Carrinho de Compras</a>
 <a href="/logout">Sair da conta</a>
 </body>

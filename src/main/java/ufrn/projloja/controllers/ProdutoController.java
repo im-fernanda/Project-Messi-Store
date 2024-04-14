@@ -5,10 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ufrn.projloja.classes.Produto;
 import ufrn.projloja.persistencia.ProdutoDAO;
 
@@ -20,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/produtos")
 public class ProdutoController {
 
     @RequestMapping(value = "/listarProdutos", method = RequestMethod.GET)
@@ -30,7 +26,19 @@ public class ProdutoController {
 
         response.setContentType("text/html");
         var writer = response.getWriter();
-        writer.println("<html> <head> <title> Lista de Produtos </title> </head> <body> <table>");
+        writer.println("<html> <head> <title> Lista de Produtos </title> <style>" +
+                "table { border-collapse: collapse; width: 80%; margin: 0 auto; }" + // Centraliza a tabela e define a largura como 80%
+                "th, td { border: 1px solid black; padding: 8px; text-align: left; }" +
+                "th { background-color: #f2f2f2; }" + "button { margin-top: 20px; }" +
+                "</style></head> <body> <h2 style=\"text-align: center;\">Lista de Produtos</h2> <table>");
+
+        writer.println("<tr>");
+        writer.println("<th>Nome</th>");
+        writer.println("<th>Descrição</th>");
+        writer.println("<th>Preço</th>");
+        writer.println("<th>Estoque</th>");
+        writer.println("<th>Carrinho</th>");
+        writer.println("</tr>");
 
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -43,8 +51,18 @@ public class ProdutoController {
             writer.println("<td><a href=\"/adicionarAoCarrinho?id=" + produto.getId() + "\">Adicionar ao Carrinho</a></td>");
             writer.println("</tr>");
         }
-        writer.println("</table></body> </html>");
+        writer.println("</table>");
+
+
+        writer.println("<form action=\"/verCarrinho\" method=\"get\" style=\"text-align: center;\">");
+        writer.println("<button type=\"submit\">Ver Carrinho de Compras</button>");
+        writer.println("</form>");
+
+        writer.println("</body> </html>");
+
+
     }
+
 
     @RequestMapping("/cadastrarProduto")
     public void cadastrarProdutos(HttpServletRequest request, HttpServletResponse response) throws IOException{

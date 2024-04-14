@@ -27,16 +27,15 @@ public class LoginController {
         boolean cliente_existe = cDAO.procurar(login, senha);
         boolean lojista_existe = lDAO.procurar(login, senha);
 
-
         if(cliente_existe){
             HttpSession session = request.getSession(true);
-            session.setAttribute("logado", true);
+            session.setAttribute("clienteLogado", true);
 
             response.sendRedirect("home_cliente.html");
             return;
         } else if (lojista_existe) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("logado", true);
+            session.setAttribute("lojistaLogado", true);
 
             response.sendRedirect("home_lojista.html");
             return;

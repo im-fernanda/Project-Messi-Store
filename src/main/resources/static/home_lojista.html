@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Logista</title>
+    <title>Home</title>
 </head>
 <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0;">
 <head>
@@ -11,14 +11,12 @@
 </head>
 
 
-<form action="/cadastrarProdutos" method="get" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; margin-bottom: 8px">
-    <button type="submit">Cadastrar Produtos</button>
-</form>
+<button onclick="window.location.href='/cadastrarProdutos'" style="margin-top: 30px; margin-bottom: 8px">Cadastrar Produtos</button>
 
-<form action="/listarProdutos" method="get" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 8px">
-    <button type="submit">Visualizar Produtos</button>
-</form>
 
+<button onclick="window.location.href='/listarProdutos'" style="margin-bottom: 8px">Visualizar Produtos</button>
+
+<!-- Link para sair da conta -->
 <a href="/logout">Sair da conta</a>
 </body>
 </html>
