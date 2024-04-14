@@ -15,9 +15,27 @@ import java.util.List;
 
 @Controller
 public class CarrinhoController {
+    @RequestMapping(value = "/carrinhoServlet", method = RequestMethod.POST)
+    protected void doTratarPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String command = request.getParameter("comando");
+        Integer id = Integer.valueOf(request.getParameter("id"));
+
+        if (command.equals("add")){
+            //adicionar ao carrinho
+            //remover do estoque
+        }else if (command.equals("remove")){
+            //remover do carrinho
+            //adicionar ao estoque
+        }
+
+
+        // Fazer o Dispatcher para o controlador que lista os produtos
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/listarProdutos");
+        dispatcher.forward(request, response);
+    }
 
     @RequestMapping(value = "/addAoCarrinho", method = RequestMethod.GET)
-    public void adicionarAoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void addAoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         List<Produto> carrinho = new ArrayList<>();
         // Simulando a adição de um produto ao carrinho
         String produtoId = request.getParameter("id");
@@ -25,8 +43,6 @@ public class CarrinhoController {
         if (produto != null) {
             carrinho.add(produto);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/listarProdutos");
-            dispatcher.forward(request, response);
         }
 
     }
