@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class CarrinhoController {
 
-    @RequestMapping(value = "/adicionarAoCarrinho", method = RequestMethod.GET)
+    @RequestMapping(value = "/addAoCarrinho", method = RequestMethod.GET)
     public void adicionarAoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Produto> carrinho = new ArrayList<>();
         // Simulando a adição de um produto ao carrinho
