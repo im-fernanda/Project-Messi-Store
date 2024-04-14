@@ -29,12 +29,7 @@ public class ProdutoController {
         p.setQuantidade(quantidade);
         pd.addProduto(p);
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            response.sendRedirect("home_lojista.html");
-        } else {
-            response.sendRedirect("login.html");
-        }
+
 
     }
 }
