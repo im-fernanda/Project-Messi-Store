@@ -2,6 +2,7 @@ package ufrn.projloja.controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@WebServlet("/carrinhoServlet")
 public class CarrinhoController {
     @RequestMapping(value = "/carrinhoServlet", method = RequestMethod.POST)
     protected void doTratarPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
