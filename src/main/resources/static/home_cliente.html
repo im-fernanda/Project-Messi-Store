@@ -33,5 +33,34 @@
 <a href="/listarProdutos">Ver lista de produtos</a>
 <a href="/verCarrinho">Ver Carrinho de Compras</a>
 <a href="/logout">Sair da conta</a>
+
+<script>
+    // Quando a página é carregada, faz uma requisição para obter os produtos
+    window.onload = function() {
+        fetch('/listarProdutos')
+            .then(response => response.json())
+            .then(produtos => {
+                // Função para criar as linhas da tabela com os dados dos produtos
+                function criarLinha(produto) {
+                    return `<tr>
+                                <td>${produto.nome}</td>
+                                <td>${produto.descricao}</td>
+                                <td>R$ ${produto.preco.toFixed(2)}</td>
+                                <td>${produto.quantidade}</td>
+                                <td><a href="/adicionarAoCarrinho?id=${produto.id}">Adicionar ao Carrinho</a></td>
+                            </tr>`;
+                }
+
+                // Seleciona a tabela onde os produtos serão exibidos
+                const tabelaProdutos = document.getElementById('tabelaProdutos');
+
+                // Adiciona as linhas na tabela com os dados dos produtos
+                produtos.forEach(produto => {
+                    tabelaProdutos.innerHTML += criarLinha(produto);
+                });
+            })
+            .catch(error => console.error('Erro ao obter produtos:', error));
+    };
+</script>
 </body>
 </html>

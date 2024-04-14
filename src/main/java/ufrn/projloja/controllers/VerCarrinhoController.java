@@ -1,4 +1,4 @@
 package ufrn.projloja.controllers;
 
-public class CarrinhoController {
+public class VerCarrinhoController {
 }
