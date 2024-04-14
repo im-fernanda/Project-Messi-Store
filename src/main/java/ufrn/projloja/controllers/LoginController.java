@@ -27,6 +27,8 @@ public class LoginController {
         boolean cliente_existe = cDAO.procurar(login, senha);
         boolean lojista_existe = lDAO.procurar(login, senha);
 
+        System.out.println("Cliente existe: " + cliente_existe);
+        System.out.println("Lojista existe: " + lojista_existe);
         if(cliente_existe){
             HttpSession session = request.getSession(true);
             session.setAttribute("clienteLogado", true);
@@ -38,6 +40,7 @@ public class LoginController {
             session.setAttribute("lojistaLogado", true);
 
             response.sendRedirect("home_lojista.html");
+
             return;
         }
         else {
@@ -47,10 +50,10 @@ public class LoginController {
     @RequestMapping(value="/logout")
     public void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.invalidate();
-
-        response.sendRedirect("index.html?msg=Saiu");
-    }
-
+        if (session != null) {
+            session.invalidate();
+        }
+        response.sendRedirect("index.html?msg=Usuario saiu");
+        }
 
 }
