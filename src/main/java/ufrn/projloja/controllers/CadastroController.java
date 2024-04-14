@@ -23,8 +23,8 @@ public class CadastroController {
         Cliente c = new Cliente(nome, login, senha);
         try{
             cDAO.cadastrar(c);
-            response.sendRedirect("cadastro.html?msg=Cadastrado com sucesso!");
-            // return ResponseEntity.ok("Cadastro realizado com sucesso!");
+            response.sendRedirect("index.html?msg=Cadastrado com sucesso!");
+
         } catch(Exception e){
             System.out.println(e.getMessage());
             response.sendRedirect("cadastro.html?msg=Erro no cadastro");
