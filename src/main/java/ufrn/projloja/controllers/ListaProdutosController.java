@@ -48,7 +48,8 @@ public class ListaProdutosController {
             } else {
                 writer.println("<td>" + produto.getQuantidade() + "</td>");
             }
-            writer.println("<td><a href='/carrinhoServlet/" + produto.getId() + "/add' title='http://localhost:8080/carrinhoServlet?id=\" + produto.getId() + \"?comando=add'>Adicionar</a></td>");
+            writer.println("<td><a href='/carrinhoServlet?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
+
             //writer.println("<td><a href='carrinhoServlet/id=" + produto.getId() + "/comando=add' title='http://localhost:8080/carrinhoServlet?id=" + produto.getId() + "?comando=add'>Adicionar</a></td>");
             writer.println("</tr>");
         }

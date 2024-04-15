@@ -18,17 +18,32 @@ public class CadastroController {
         var nome = request.getParameter("nome");
         var login = request.getParameter("login");
         var senha = request.getParameter("senha");
+        var confirmaSenha = request.getParameter("confirma_senha");
 
-        ClienteDAO cDAO = new ClienteDAO();
-        Cliente c = new Cliente(nome, login, senha);
-        try{
-            cDAO.cadastrar(c);
-            response.sendRedirect("index.html?msg=Cadastrado com sucesso!");
+        if (nome != null && !nome.isEmpty() && login != null && !login.isEmpty() &&
+                senha != null && !senha.isEmpty() && confirmaSenha != null && !confirmaSenha.isEmpty()) {
+            // Todos os campos estão preenchidos
+            if (senha.equals(confirmaSenha)) {
+                // Senhas coincidem, continuar com o cadastro
+                ClienteDAO cDAO = new ClienteDAO();
+                Cliente c = new Cliente(nome, login, senha);
+                try{
+                    cDAO.cadastrar(c);
+                    response.sendRedirect("index.html?msg=Cadastrado com sucesso!");
 
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-            response.sendRedirect("cadastro.html?msg=Erro no cadastro");
+                } catch(Exception e){
+                    System.out.println(e.getMessage());
+                    response.sendRedirect("cadastro.html?msg=Erro no cadastro");
+                }
+            } else {
+                // Senhas não coincidem, redirecionar de volta ao formulário com uma mensagem de erro
+                response.sendRedirect("cadastro.html?erro=As senhas não coincidem");
+            }
+        } else {
+            // Algum campo não foi preenchido, redirecionar de volta ao formulário com uma mensagem de erro
+            response.sendRedirect("cadastro.html?erro=Preencha todos os campos");
         }
 
     }
+
 }
