@@ -23,11 +23,16 @@ public class CadastroController {
         if (nome != null && !nome.isEmpty() && login != null && !login.isEmpty() &&
                 senha != null && !senha.isEmpty() && confirmaSenha != null && !confirmaSenha.isEmpty()) {
             // Todos os campos estão preenchidos
+            ClienteDAO cDAO = new ClienteDAO();
+//            if (cDAO.jaExiste(login)) {
+//                // O email já está cadastrado, redirecionar de volta ao formulário com uma mensagem de erro
+//                response.sendRedirect("cadastro.html?erro=Este email já está cadastrado");
+//                return; // Sair do método, pois não podemos prosseguir com o cadastro
+//            }
             if (senha.equals(confirmaSenha)) {
                 // Senhas coincidem, continuar com o cadastro
-                ClienteDAO cDAO = new ClienteDAO();
                 Cliente c = new Cliente(nome, login, senha);
-                try{
+                try {
                     cDAO.cadastrar(c);
                     response.sendRedirect("index.html?msg=Cadastrado com sucesso!");
 
