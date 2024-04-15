@@ -11,7 +11,6 @@ import java.io.IOException;
 //Filtra as páginas que o lojista não pode acessar
 @WebFilter(urlPatterns = {"/home_cliente.html", "/verCarrinho"})
 public class FiltroLojista implements Filter {
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);

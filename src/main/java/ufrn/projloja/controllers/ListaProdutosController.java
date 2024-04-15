@@ -103,15 +103,15 @@ public class ListaProdutosController {
 
         writer.println("<button onclick=\"window.location.href='cadastro_produto.html'\">Cadastrar Produto</button>");
         writer.println("<button onclick=\"window.location.href='home_lojista.html'\">Voltar para Home</button>");
+        writer.println("<button onclick=\"window.location.href='/logout'\">Sair da conta</button>");
+
         writer.println("</td>");
         writer.println("</tr>");
 
         writer.println("</body> </html>");
 
 
-
     }
-
 
 }
 
