@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <style>
+        button { margin-top: 20px; }
+        a {margin-top: 20px}
+    </style>
+
+</head>
+
+<body style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0;">
+<head>
+    <h1>Bem vindo, lojista!</h1>
+</head>
+
+<form action="/listarProdutosLojista" method="get">
+    <button type="submit">Ver lista de produtos</button>
+</form>
+<form action="cadastro_produto.html" method="get">
+    <button type="submit">Cadastrar produtos</button>
+</form>
+<a href="/logout">Sair da conta</a>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ import ufrn.projloja.classes.Cliente;
 import ufrn.projloja.classes.Lojista;
 import ufrn.projloja.persistencia.ClienteDAO;
 import ufrn.projloja.persistencia.LojistaDAO;
+import ufrn.projloja.StaticDocs;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class LoginController {
     public void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var login = request.getParameter("login");
         var senha = request.getParameter("senha");
+        char remover = '@';
 
         ClienteDAO cDAO = new ClienteDAO();
         LojistaDAO lDAO = new LojistaDAO();
@@ -32,6 +34,10 @@ public class LoginController {
 
             if (cliente != null) {
                 session.setAttribute("clienteLogado", true);
+
+                login = login.replace(String.valueOf(remover), "");
+                StaticDocs.clienteLogin = login;
+
                 response.sendRedirect("home_cliente.html");
             } else {
                 session.setAttribute("lojistaLogado", true);

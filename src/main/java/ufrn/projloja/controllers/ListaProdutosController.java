@@ -23,7 +23,7 @@ public class ListaProdutosController {
         response.setContentType("text/html");
         var writer = response.getWriter();
         writer.println("<html> <head> <title> Lista de Produtos </title> <style>" +
-                "table { border-collapse: collapse; width: 80%; margin: 0 auto; }" + // Centraliza a tabela e define a largura como 80%
+                "table { border-collapse: collapse; width: 80%; margin: 0 auto; }" +
                 "th, td { border: 1px solid black; padding: 8px; text-align: left; }" +
                 "th { background-color: #f2f2f2; }" + "button { margin-top: 20px; margin-left: 10px}" +
                 "</style></head> <body> <h2 style=\"text-align: center;\">Lista de Produtos</h2> <table>");
@@ -43,25 +43,22 @@ public class ListaProdutosController {
             writer.println("<td>" + produto.getNome() + "</td>");
             writer.println("<td>" + produto.getDescricao() + "</td>");
             writer.println("<td>R$ " + decimalFormat.format(produto.getPreco()) + "</td>");
-            if (produto.getQuantidade() == 0){
+            writer.println("<td>" + produto.getQuantidade() + "</td>");
+            if (produto.getQuantidade() == 0) {
                 writer.println("<td>Sem Estoque</td>");
             } else {
-                writer.println("<td>" + produto.getQuantidade() + "</td>");
+                writer.println("<td><a href='/carrinhoServlet?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
             }
-            writer.println("<td><a href='/carrinhoServlet?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
-
-            //writer.println("<td><a href='carrinhoServlet/id=" + produto.getId() + "/comando=add' title='http://localhost:8080/carrinhoServlet?id=" + produto.getId() + "?comando=add'>Adicionar</a></td>");
             writer.println("</tr>");
         }
 
         writer.println("<tr>");
         writer.println("<td colspan=\"5\" style=\"text-align: center;\">");
-        writer.println("<button onclick=\"window.location.href='verCarrinho'\">Ver Carrinho</button>");
+        writer.println("<button onclick=\"window.location.href='/verCarrinho'\">Ver Carrinho</button>");
         writer.println("<button onclick=\"window.location.href='home_cliente.html'\">Voltar para Home</button></td>");
         writer.println("</tr>");
 
         writer.println("</body> </html>");
-
     }
 
     @RequestMapping(value = "/listarProdutosLojista", method = RequestMethod.GET)
@@ -80,7 +77,7 @@ public class ListaProdutosController {
         writer.println("<tr>");
         writer.println("<th>Nome</th>");
         writer.println("<th>Descrição</th>");
-        writer.println("<th>Preço</th>");
+        writer.println("<th>Preço Unitário</th>");
         writer.println("<th>Estoque</th>");
         writer.println("</tr>");
 

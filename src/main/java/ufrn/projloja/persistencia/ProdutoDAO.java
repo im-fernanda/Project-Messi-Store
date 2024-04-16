@@ -17,6 +17,7 @@ public class ProdutoDAO {
     private String UPD = "UPDATE Produtos SET quantidade = ? WHERE id = ?";
     private String REL = "SELECT * FROM Produtos";
     private String GET = "SELECT * FROM Produtos WHERE id = ?";
+    private String GETQUANTIDADE = "SELECT quantidade FROM Produtos WHERE id = ?";
 
     public ProdutoDAO() {
         con = new Conexao("jdbc:postgresql://localhost:5432/db_loja", "postgres", "2005");
@@ -97,5 +98,24 @@ public class ProdutoDAO {
             System.out.println("Erro na busca por ID: " + e.getMessage());
         }
         return produto;
+    }
+
+    public int getQuantidade(int id){
+        int quantidade = 0;
+        try{
+            con.conectar();
+            PreparedStatement ps = con.getConexao().prepareStatement(GET);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                quantidade = rs.getInt("quantidade");
+            }
+            con.desconectar();
+        } catch (Exception e) {
+            System.out.println("Erro na busca por ID: " + e.getMessage());
+        }
+
+        return quantidade;
     }
 }
