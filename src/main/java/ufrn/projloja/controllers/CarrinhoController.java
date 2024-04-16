@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.Cookie;
@@ -12,110 +13,131 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ufrn.projloja.StaticDocs;
 import ufrn.projloja.persistencia.ProdutoDAO;
-
 @Controller
 public class CarrinhoController {
     String idProdutos = "";
-    String stringId;
 
     @GetMapping("/carrinhoServlet")
-    public void controlCarrinho(@RequestParam int id, @RequestParam String comando, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        stringId = String.valueOf(id);
+    public void controlCarrinho(@RequestParam("id") String idProduto, @RequestParam("comando") String comando, HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
         String nomeCarrinho = StaticDocs.clienteLogin;
 
-        if(comando.equals("add")){
-            ProdutoDAO pDao = new ProdutoDAO();
-            int quantidade = pDao.getQuantidade(id);
+        if (comando.equals("add")) {
+            ProdutoDAO pDAO = new ProdutoDAO();
+            int quantidade = pDAO.getQuantidade(Integer.parseInt(idProduto));
 
-            if(quantidade == 0){
+            if (quantidade == 0) {
                 response.sendRedirect("/listarProdutosCliente?msg=Produto sem estoque");
                 return;
             }
-
-            // pega todos o cookies do servidor e percorre cada um
+            // Percorre os cookies existentes
             Cookie[] cookies = request.getCookies();
-            if(cookies != null){
-                for(Cookie cookie : cookies){
-                    if(cookie.getName().equals(String.valueOf(nomeCarrinho))){
-                        //caso existe um cookie do cliente atual pega o que está guardado nele
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(nomeCarrinho)) {
+                        // Caso exista um cookie do cliente atual, pega o que está guardado nele
                         idProdutos = cookie.getValue();
                         break;
                     }
                 }
             }
+            // Adiciona o produto adicionado ao cookie já existente
+            idProdutos += idProduto + "_";
 
-            idProdutos += stringId + "_";
+            // Destruir cookie antes de atualiza-lo
+            Cookie cookieToDelete = new Cookie(nomeCarrinho, null); // Crie um novo cookie com o mesmo nome do cookie a ser destruído
+            cookieToDelete.setMaxAge(0); // Defina o tempo de vida do cookie como zero para que ele expire imediatamente
+            response.addCookie(cookieToDelete); // Adicione o cookie à resposta HTTP para que ele seja removido pelo navegador
 
-            // cria o cookie guardando os ids dos produtos
-            Cookie carrinho = new Cookie(String.valueOf(nomeCarrinho), idProdutos);
-            carrinho.setMaxAge(172800); // tempo de vida em segundos
+            // Cria um novo cookie guardando os ids dos produtos
+            //nomeCarrinho.setValue(idProdutos);
+
+            Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
+            carrinho.setMaxAge(60 * 60 * 48); // tempo de vida em segundos
             response.addCookie(carrinho);
             response.sendRedirect("/listarProdutosCliente?msg=Produto adicionado");
+        } else if (comando.equals("remove")) {
+            idProduto = idProduto + "_";
+            idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira o id do produto da string
 
-        }else if(comando.equals("remove")){
-            stringId = stringId + "_";
-            idProdutos = idProdutos.replaceFirst(stringId, ""); // retira o id do prouto removido a string
+            // Verifica se o carrinho ainda tem produtos
+            if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
 
-            if(idProdutos != ""){ // caso não tenha ficado vazia instancia novamente o cookia com o resto dos ids
+                // Tentar destruir o cookie antes
+
+
                 Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
                 carrinho.setMaxAge(172800);
                 response.addCookie(carrinho);
                 response.sendRedirect("/verCarrinho?msg=Produto removido");
-            }else if(idProdutos == ""){ // caso tenha zerado o carrinho, apaga o cookie
+            } else if (idProdutos.equals("")) { // Caso tenha zerado o carrinho, apaga o cookie
                 Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
                 carrinho.setMaxAge(0);
                 response.addCookie(carrinho);
-                response.sendRedirect("verCarrinho?msg=Carrinho esvaziado");
+                response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
             }
         }
     }
 
     @GetMapping("/carrinhoServletFromVerCarrinho")
-    public void controlCarrinhoFromVerCarrinho(@RequestParam int id, @RequestParam String comando, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        stringId = String.valueOf(id);
+    public void controlCarrinhoFromVerCarrinho(@RequestParam ("id") String idProduto, @RequestParam ("comando")String comando,
+                                               HttpServletRequest request, HttpServletResponse response) throws IOException {
         String nomeCarrinho = StaticDocs.clienteLogin;
 
-        if(comando.equals("add")){
-            ProdutoDAO pDao = new ProdutoDAO();
-            int quantidade = pDao.getQuantidade(id);
-
-            if(quantidade == 0){
-                response.sendRedirect("/listarProdutosCliente?msg=Produto sem estoque");
-            }
-
+        if (comando.equals("add")) {
+            ProdutoDAO pDAO = new ProdutoDAO();
+            int quantidade = pDAO.getQuantidade(Integer.parseInt(idProduto));
+            // Percorre os cookies existentes
             Cookie[] cookies = request.getCookies();
-            if(cookies != null){
-                for(Cookie cookie : cookies){
-                    if(cookie.getName().equals(String.valueOf(nomeCarrinho))){
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(nomeCarrinho)) {
+                        // Caso exista um cookie do cliente atual, pega o que está guardado nele
                         idProdutos = cookie.getValue();
                         break;
                     }
                 }
             }
 
-            idProdutos += stringId + "_";
+            // Adiciona o produto adicionado ao cookie já existente
+            idProdutos += idProduto + "_";
+            // Destruir cookie antes de atualiza-lo
+            // Fazer aki
 
-            Cookie carrinho = new Cookie(String.valueOf(nomeCarrinho), idProdutos);
-            carrinho.setMaxAge(172800);
+            // Cria um novo cookie guardando os ids dos produtos
+            // carrinho.setValue(idProdutos);
+            Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
+            carrinho.setMaxAge(60 * 60 * 48);
             response.addCookie(carrinho);
-            response.sendRedirect("/verCarrinho");
+            response.sendRedirect("/verCarrinho?msg=Produto adicionado");
 
-        }else if(comando.equals("remove")){
-            stringId = stringId + "_";
-            idProdutos = idProdutos.replaceFirst(stringId, "");
 
-            if(idProdutos != ""){
-                Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
-                carrinho.setMaxAge(172800);
+        } else if (comando.equals("remove")) {
+            idProduto = idProduto + "_";
+            idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira o id do produto da string
+
+            // Percorre os cookies existentes
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(nomeCarrinho)) {
+                        // Caso exista um cookie do cliente atual, pega o que está guardado nele
+                        idProdutos = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+
+            // Verifica se o carrinho ainda tem produtos
+            if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
+                Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
                 response.addCookie(carrinho);
-                response.sendRedirect("/verCarrinho");
-            }else if(idProdutos == ""){
-                Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
+                response.sendRedirect("/verCarrinho?msg=Produto removido");
+            } else if (idProdutos.equals("")) { // Caso tenha zerado o carrinho, apaga o cookie
+                Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
                 carrinho.setMaxAge(0);
                 response.addCookie(carrinho);
-                response.sendRedirect("/verCarrinho");
+                response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
             }
         }
     }
@@ -123,23 +145,29 @@ public class CarrinhoController {
     @GetMapping("/finalizarCompra")
     public void finalizarCompra(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ArrayList<Integer> arrayIds = StaticDocs.idsCarrinho;
-        ArrayList<Integer> arrayQuantidades = StaticDocs.quantidadesCarrinho;       
-        ProdutoDAO pDao = new ProdutoDAO();
+        ArrayList<Integer> arrayQuantidades = StaticDocs.quantidadesCarrinho;
+        ProdutoDAO pDAO = new ProdutoDAO();
         int quantidade;
         int novaQuantidade;
 
-        for(int i = 0; i < arrayIds.size(); i++){
-            quantidade = pDao.getQuantidade(arrayIds.get(i));
+        for (int i = 0; i < arrayIds.size(); i++) {
+            quantidade = pDAO.getQuantidade(arrayIds.get(i));
             novaQuantidade = quantidade - arrayQuantidades.get(i);
 
-            pDao.updateQuantidade(arrayIds.get(i), novaQuantidade);
+            pDAO.updateQuantidade(arrayIds.get(i), novaQuantidade);
+        }
+        // Apagando o cookie do carrinho
+        String nomeCarrinho = StaticDocs.clienteLogin;
+        // Percorre os cookies existentes
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(nomeCarrinho)) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                idProdutos = "";
+                response.sendRedirect("home_cliente.html?msg=Compra realizada");
+            }
         }
 
-        // apagando o cookie do carrinho
-        Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
-        carrinho.setMaxAge(0);
-        response.addCookie(carrinho);
-        idProdutos = "";
-        response.sendRedirect("home_cliente.html?msg=Compra realizada");
     }
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,11 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import ufrn.projloja.StaticDocs;
 import ufrn.projloja.classes.Produto;
 import ufrn.projloja.persistencia.ProdutoDAO;
-
 @Controller
 public class VerCarrinhoController {
-    
-    @RequestMapping(value = "/verCarrinho", method = RequestMethod.GET)
+
+    @GetMapping(value = "/verCarrinho")
     public void verCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         var writer = response.getWriter();
@@ -36,19 +36,11 @@ public class VerCarrinhoController {
                 }
             }
         }
-
         if (vazio) {
-            writer.println("<html><head><title>Carrinho de Compras</title><style>" +
-                    "body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }" +
-                    "h1 { text-align: center; }" +
-                    "button { margin-top: 20px; margin-left: 10px; }" +
-                    "</style></head><body>" +
-                    "<h1>Carrinho Vazio</h1><br>" +
-                    "<button onclick=\"window.location.href='home_cliente.html'\">Voltar para Home</button>" +
-                    "</body></html>");
+            response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
+            return;
         }
-
-        writer.println("<html><head><title>Lista de Produtos</title><style>" +
+        writer.println("<html><head><title>Carrinho de Compras</title><style>" +
                 "table { border-collapse: collapse; width: 60%; margin: 0 auto; }" +
                 "th, td { border: 1px solid black; padding: 8px; text-align: left; }" +
                 "th { background-color: #f2f2f2; }" +
@@ -67,8 +59,8 @@ public class VerCarrinhoController {
         Map<Integer, Integer> contagemIds = new HashMap<>();
         String[] ids = valorCookie.split("_");
         for (String id : ids) {
-
             int intId = Integer.parseInt(id);
+            // Id do produto é o key, e o getValue as quantidades
             contagemIds.put(intId, contagemIds.getOrDefault(intId, 0) + 1);
         }
 
@@ -76,26 +68,32 @@ public class VerCarrinhoController {
             int id = entry.getKey();
             int quantidadeRepetida = entry.getValue();
             Produto p;
-            ProdutoDAO pDao = new ProdutoDAO();
-            p = pDao.getProdutoPorId(id);
-            int estoque = pDao.getQuantidade(id);
+            ProdutoDAO pDAO = new ProdutoDAO();
+            p = pDAO.getProdutoPorId(id);
+            int estoque = pDAO.getQuantidade(id);
+
             if (quantidadeRepetida == estoque) {
-                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida + "</td><td>Máximo de estoque</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=remove'>Remover</a></td></tr>");
+                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida
+                        + "</td><td>Máximo de estoque</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
+                        + "&comando=remove'>Remover</a></td></tr>");
             } else {
-                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida + "</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=add'>Adicionar</a></td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=remove'>Remover</a></td></tr>");
+                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida
+                        + "</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
+                        + "&comando=add'>Adicionar</a></td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
+                        + "&comando=remove'>Remover</a></td></tr>");
+
+
             }
 
             StaticDocs.idsCarrinho.add(p.getId());
             StaticDocs.quantidadesCarrinho.add(quantidadeRepetida);
         }
-        writer.println("<tr>");
+
         writer.println("<td colspan=\"5\" style=\"text-align: center;\">");
-        writer.println("<button onclick=\"window.location.href='/listaProdutosClientes'\">Ver produtos</button>");
+        writer.println("<button onclick=\"window.location.href='/listarProdutosCliente'\">Ver produtos</button>");
         writer.println("<button onclick=\"window.location.href='/finalizarCompra'\">Finalizar compra</button>");
         writer.println("<button onclick=\"window.location.href='home_cliente.html'\">Voltar para Home</button></td>");
         writer.println("</tr>");
-
         writer.println("</body></html>");
-
     }
 }
