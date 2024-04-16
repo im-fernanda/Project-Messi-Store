@@ -50,22 +50,31 @@ public class CarrinhoController {
             response.addCookie(cookieToDelete); // Adicione o cookie à resposta HTTP para que ele seja removido pelo navegador
 
             // Cria um novo cookie guardando os ids dos produtos
-            //nomeCarrinho.setValue(idProdutos);
 
             Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
             carrinho.setMaxAge(60 * 60 * 48); // tempo de vida em segundos
             response.addCookie(carrinho);
             response.sendRedirect("/listarProdutosCliente?msg=Produto adicionado");
+
         } else if (comando.equals("remove")) {
             idProduto = idProduto + "_";
             idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira o id do produto da string
 
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(nomeCarrinho)) {
+                        // Caso exista um cookie do cliente atual, pega o que está guardado nele
+                        idProdutos = cookie.getValue();
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                        break;
+                    }
+                }
+            }
+
             // Verifica se o carrinho ainda tem produtos
             if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
-
-                // Tentar destruir o cookie antes
-
-
                 Cookie carrinho = new Cookie(StaticDocs.clienteLogin, idProdutos);
                 carrinho.setMaxAge(172800);
                 response.addCookie(carrinho);
@@ -98,11 +107,8 @@ public class CarrinhoController {
                     }
                 }
             }
-
             // Adiciona o produto adicionado ao cookie já existente
             idProdutos += idProduto + "_";
-            // Destruir cookie antes de atualiza-lo
-            // Fazer aki
 
             // Cria um novo cookie guardando os ids dos produtos
             // carrinho.setValue(idProdutos);
@@ -111,12 +117,11 @@ public class CarrinhoController {
             response.addCookie(carrinho);
             response.sendRedirect("/verCarrinho?msg=Produto adicionado");
 
-
         } else if (comando.equals("remove")) {
             idProduto = idProduto + "_";
-            idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira o id do produto da string
+            idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira a primeira ocorrência da id do produto da string
 
-            // Percorre os cookies existentes
+            //Percorre os cookies existentes
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
@@ -128,11 +133,24 @@ public class CarrinhoController {
                 }
             }
 
+            System.out.println("Cookie: " + idProdutos);
+
             // Verifica se o carrinho ainda tem produtos
             if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
-                Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
-                response.addCookie(carrinho);
-                response.sendRedirect("/verCarrinho?msg=Produto removido");
+                if (nomeCarrinho != null && !nomeCarrinho.isEmpty()) {
+                    Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
+                    carrinho.setMaxAge(60 * 60 * 48);
+                    response.addCookie(carrinho);
+                    response.sendRedirect("/verCarrinho?msg=Produto removido");
+                } else {
+                    // Trate o caso em que nomeCarrinho é nulo ou vazio
+                    String nomePadrao = StaticDocs.clienteLogin;
+                    Cookie carrinho = new Cookie(nomePadrao, idProdutos);
+                    carrinho.setMaxAge(60 * 60 * 48);
+                    response.addCookie(carrinho);
+                    response.sendRedirect("/verCarrinho?msg=Produto removido");
+                }
+
             } else if (idProdutos.equals("")) { // Caso tenha zerado o carrinho, apaga o cookie
                 Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
                 carrinho.setMaxAge(0);
@@ -140,6 +158,7 @@ public class CarrinhoController {
                 response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
             }
         }
+
     }
 
     @GetMapping("/finalizarCompra")
@@ -156,6 +175,7 @@ public class CarrinhoController {
 
             pDAO.updateQuantidade(arrayIds.get(i), novaQuantidade);
         }
+
         // Apagando o cookie do carrinho
         String nomeCarrinho = StaticDocs.clienteLogin;
         // Percorre os cookies existentes
@@ -165,6 +185,8 @@ public class CarrinhoController {
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
                 idProdutos = "";
+                StaticDocs.idsCarrinho = new ArrayList<>();
+                StaticDocs.quantidadesCarrinho = new ArrayList<>();
                 response.sendRedirect("home_cliente.html?msg=Compra realizada");
             }
         }

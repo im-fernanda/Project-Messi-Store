@@ -40,6 +40,7 @@ public class VerCarrinhoController {
             response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
             return;
         }
+
         writer.println("<html><head><title>Carrinho de Compras</title><style>" +
                 "table { border-collapse: collapse; width: 60%; margin: 0 auto; }" +
                 "th, td { border: 1px solid black; padding: 8px; text-align: left; }" +
@@ -67,22 +68,21 @@ public class VerCarrinhoController {
         for (Map.Entry<Integer, Integer> entry : contagemIds.entrySet()) {
             int id = entry.getKey();
             int quantidadeRepetida = entry.getValue();
+
             Produto p;
             ProdutoDAO pDAO = new ProdutoDAO();
             p = pDAO.getProdutoPorId(id);
             int estoque = pDAO.getQuantidade(id);
+            writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>");
 
             if (quantidadeRepetida == estoque) {
-                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida
-                        + "</td><td>Máximo de estoque</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
+                writer.println( + quantidadeRepetida + "</td><td>Máximo de estoque</td><td>" +
+                        "<a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
                         + "&comando=remove'>Remover</a></td></tr>");
             } else {
-                writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>" + quantidadeRepetida
-                        + "</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
-                        + "&comando=add'>Adicionar</a></td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
-                        + "&comando=remove'>Remover</a></td></tr>");
-
-
+                writer.println(+ quantidadeRepetida + "</td>" +
+                        "<td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=add'>Adicionar</a>" +
+                        "</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=remove'>Remover</a></td></tr>");
             }
 
             StaticDocs.idsCarrinho.add(p.getId());
