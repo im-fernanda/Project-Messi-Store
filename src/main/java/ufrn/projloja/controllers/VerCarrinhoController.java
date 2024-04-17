@@ -53,7 +53,6 @@ public class VerCarrinhoController {
                 "<th>Nome</th>" +
                 "<th>Preço</th>" +
                 "<th>Quantidade</th>" +
-                "<th>Add</th>" +
                 "<th>Remover</th>" +
                 "</tr>");
 
@@ -76,20 +75,19 @@ public class VerCarrinhoController {
             writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>");
 
             if (quantidadeRepetida == estoque) {
-                writer.println( + quantidadeRepetida + "</td><td>Máximo de estoque</td><td>" +
-                        "<a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
+                writer.println( + quantidadeRepetida +
+                        "<td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId()
                         + "&comando=remove'>Remover</a></td></tr>");
             } else {
                 writer.println(+ quantidadeRepetida + "</td>" +
-                        "<td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=add'>Adicionar</a>" +
-                        "</td><td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=remove'>Remover</a></td></tr>");
+                        "<td><a href='/carrinhoServletFromVerCarrinho?id=" + p.getId() + "&comando=remove'>Remover</a></td></tr>");
             }
 
             StaticDocs.idsCarrinho.add(p.getId());
             StaticDocs.quantidadesCarrinho.add(quantidadeRepetida);
         }
 
-        writer.println("<td colspan=\"5\" style=\"text-align: center;\">");
+        writer.println("<td colspan=\"4\" style=\"text-align: center;\">");
         writer.println("<button onclick=\"window.location.href='/listarProdutosCliente'\">Ver produtos</button>");
         writer.println("<button onclick=\"window.location.href='/finalizarCompra'\">Finalizar compra</button>");
         writer.println("<button onclick=\"window.location.href='home_cliente.html'\">Voltar para Home</button></td>");

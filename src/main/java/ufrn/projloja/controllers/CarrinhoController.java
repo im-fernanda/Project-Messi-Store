@@ -174,9 +174,7 @@ public class CarrinhoController {
         for (int i = 0; i < arrayIds.size(); i++) {
             quantidade = pDAO.getQuantidade(arrayIds.get(i));
             novaQuantidade = quantidade - arrayQuantidades.get(i);
-//            if (novaQuantidade == 0){
-//
-//            }
+
             pDAO.updateQuantidade(arrayIds.get(i), novaQuantidade);
         }
 
