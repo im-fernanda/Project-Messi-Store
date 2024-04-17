@@ -8,6 +8,7 @@ public class ClienteDAO {
     private Conexao con;
     private String CAD = "INSERT INTO Clientes (nome, login, senha) VALUES (?, ?, ?)";
     private String PROCURAR = "SELECT * FROM Clientes WHERE login=? AND senha=?";
+    private String GETBYLOGIN = "SELECT * FROM Clientes WHERE login=?";
 
     public ClienteDAO() {
         con = new Conexao("jdbc:postgresql://localhost:5432/db_loja", "postgres", "2005");
@@ -65,5 +66,26 @@ public class ClienteDAO {
             System.out.println("Erro na busca: " + e.getMessage());
         }
         return id;
+    }
+
+    public Boolean getByLogin(String login) {
+        ResultSet rs = null;
+        Boolean achou = false;
+
+        try {
+            con.conectar();
+            PreparedStatement ps = con.getConexao().prepareStatement(GETBYLOGIN);
+            ps.setString(1, login);
+
+            rs = ps.executeQuery();
+            if(rs.next()){
+                achou = true;
+            }
+            con.desconectar();
+        } catch(Exception e){
+            System.out.println("Erro na busca: " + e.getMessage());
+        }
+
+        return achou;
     }
 }

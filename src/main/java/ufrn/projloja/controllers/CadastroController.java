@@ -26,17 +26,18 @@ public class CadastroController {
             ClienteDAO cDAO = new ClienteDAO();
 //            if (cDAO.jaExiste(login)) {
 //                // O email já está cadastrado, redirecionar de volta ao formulário com uma mensagem de erro
-//                response.sendRedirect("cadastro.html?erro=Este email já está cadastrado");
-//                return; // Sair do método, pois não podemos prosseguir com o cadastro
-//            }
+            if(cDAO.getByLogin(login)) {
+                response.sendRedirect("cadastro.html?msg=Este email já está cadastrado");
+                return;
+            }
+
             if (senha.equals(confirmaSenha)) {
                 // Senhas coincidem, continuar com o cadastro
                 Cliente c = new Cliente(nome, login, senha);
                 try {
                     cDAO.cadastrar(c);
                     response.sendRedirect("index.html?msg=Cadastrado com sucesso!");
-
-                } catch(Exception e){
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                     response.sendRedirect("cadastro.html?msg=Erro no cadastro");
                 }

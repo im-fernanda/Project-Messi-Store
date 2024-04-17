@@ -23,12 +23,16 @@ public class ProdutoController {
 
         Produto p = new Produto();
         ProdutoDAO pd = new ProdutoDAO();
-        p.setNome(nome);
-        p.setDescricao(descricao);
-        p.setPreco(preco);
-        p.setQuantidade(quantidade);
-        pd.addProduto(p);
-        response.sendRedirect("home_lojista.html?msg=Produto add com sucesso");
+        if(!pd.getByNome(nome)){
+            p.setNome(nome);
+            p.setDescricao(descricao);
+            p.setPreco(preco);
+            p.setQuantidade(quantidade);
+            pd.addProduto(p);
+            response.sendRedirect("home_lojista.html?msg=Produto add com sucesso");
+        }else {
+            response.sendRedirect("cadastro_produto.html?msg=Produto ja existente");
+        }
     }
 
 

@@ -15,6 +15,7 @@ public class FiltroLojista implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
     }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
@@ -29,6 +30,7 @@ public class FiltroLojista implements Filter {
             Boolean lojistaLogado = (Boolean) session.getAttribute("lojistaLogado");
             if (lojistaLogado != null && lojistaLogado.booleanValue()) {
                 response.sendRedirect("home_lojista.html?msg=Voce precisa logar como cliente antes");
+                return;
             }
         }
 
