@@ -89,7 +89,7 @@ public class CarrinhoController {
     }
 
     @GetMapping("/carrinhoServletFromVerCarrinho")
-    public void controlCarrinhoFromVerCarrinho(@RequestParam ("id") String idProduto, @RequestParam ("comando")String comando,
+    public void controlCarrinhoFromVerCarrinho(@RequestParam("id") String idProduto, @RequestParam("comando") String comando,
                                                HttpServletRequest request, HttpServletResponse response) throws IOException {
         String nomeCarrinho = StaticDocs.clienteLogin;
 
@@ -118,32 +118,34 @@ public class CarrinhoController {
             response.sendRedirect("/verCarrinho?msg=Produto adicionado");
 
         } else if (comando.equals("remove")) {
+            System.out.println("Cookie antes: " + idProdutos);
+            System.out.println("Produto: " + idProduto);
+
             idProduto = idProduto + "_";
-            idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira a primeira ocorrência da id do produto da string
+            //idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira a primeira ocorrência da id do produto da string
 
-            //Percorre os cookies existentes
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals(nomeCarrinho)) {
-                        // Caso exista um cookie do cliente atual, pega o que está guardado nele
-                        idProdutos = cookie.getValue();
-                        break;
-                    }
-                }
+            // Encontra a posição da primeira ocorrência do idProduto na string idProdutos
+            StringBuilder idProdutosBuilder = new StringBuilder(idProdutos);
+            int index = idProdutosBuilder.indexOf(idProduto);
+
+            // Se encontrar o idProduto na string idProdutos, remove-o
+            if (index != -1) {
+                // Remove o idProduto da string idProdutos
+                idProdutosBuilder.delete(index, index + idProduto.length());
+                // Atualiza a variável idProdutos com a nova string sem o idProduto
+                idProdutos = idProdutosBuilder.toString();
             }
+            System.out.println("Cookie depois: " + idProdutos);
 
-            System.out.println("Cookie: " + idProdutos);
-
+            System.out.println("Cookie depois de percorrer: " + idProdutos);
             // Verifica se o carrinho ainda tem produtos
             if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
                 if (nomeCarrinho != null && !nomeCarrinho.isEmpty()) {
                     Cookie carrinho = new Cookie(nomeCarrinho, idProdutos);
-                    carrinho.setMaxAge(60 * 60 * 48);
                     response.addCookie(carrinho);
                     response.sendRedirect("/verCarrinho?msg=Produto removido");
                 } else {
-                    // Trate o caso em que nomeCarrinho é nulo ou vazio
+                    // Trata o caso em que nomeCarrinho é nulo ou vazio
                     String nomePadrao = StaticDocs.clienteLogin;
                     Cookie carrinho = new Cookie(nomePadrao, idProdutos);
                     carrinho.setMaxAge(60 * 60 * 48);
@@ -158,8 +160,8 @@ public class CarrinhoController {
                 response.sendRedirect("/listarProdutosCliente?msg=Carrinho vazio");
             }
         }
-
     }
+
 
     @GetMapping("/finalizarCompra")
     public void finalizarCompra(HttpServletRequest request, HttpServletResponse response) throws IOException {
