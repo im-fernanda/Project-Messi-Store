@@ -1,0 +1,32 @@
+CREATE TABLE Lojistas(
+	id SERIAL PRIMARY KEY,
+	nome TEXT NOT NULL,
+	login TEXT NOT NULL,
+	senha TEXT NOT NULL
+);
+
+CREATE TABLE Clientes(
+	id SERIAL PRIMARY KEY,
+	nome TEXT NOT NULL,
+	login TEXT NOT NULL,
+	senha TEXT NOT NULL
+);
+
+CREATE TABLE Produtos(
+	id SERIAL PRIMARY KEY,
+	nome TEXT NOT NULL,
+	preco FLOAT NOT NULL,
+	quantidade INT NOT NULL,
+	descricao TEXT NOT NULL
+);
+
+
+INSERT INTO Lojistas (nome, login, senha) VALUES ('Fernanda Felix', 'fernanda@loja', '123');
+INSERT INTO Lojistas (nome, login, senha) VALUES ('Luan Verissimo', 'tanirocr@gmail.com', '456');
+INSERT INTO Lojistas (nome, login, senha) VALUES ('Taniro Rodrigues', 'luan_@loja', '123456abc');
+	
+
+INSERT INTO Produtos(nome, preco, quantidade, descricao) VALUES ('Borracha', 20, 50, 'Borracha que apaga as últimas temporadas');
+INSERT INTO Produtos(nome, preco, quantidade, descricao) VALUES ('Camisa Arg', 500, 2, 'Camisa da campeã do mundo 2022');
+INSERT INTO Produtos(nome, preco, quantidade, descricao) VALUES ('Taça da Copa do Mundo', 10000, 1, 'UHUUU');
+INSERT INTO Produtos(nome, preco, quantidade, descricao) VALUES ('Camisa Barça', 600, 3, 'Camisa da época de Ouro');
