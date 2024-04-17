@@ -7,14 +7,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ufrn.projloja.StaticDocs;
 import ufrn.projloja.classes.Produto;
 import ufrn.projloja.persistencia.ProdutoDAO;
-
 @Controller
 public class VerCarrinhoController {
 
@@ -25,6 +26,7 @@ public class VerCarrinhoController {
         Cookie[] cookies = request.getCookies();
         String valorCookie = "";
         Boolean vazio = true;
+        double n = 0;
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -63,6 +65,8 @@ public class VerCarrinhoController {
             contagemIds.put(intId, contagemIds.getOrDefault(intId, 0) + 1);
         }
 
+        double total = 0;
+
         for (Map.Entry<Integer, Integer> entry : contagemIds.entrySet()) {
             int id = entry.getKey();
             int quantidadeRepetida = entry.getValue();
@@ -70,6 +74,7 @@ public class VerCarrinhoController {
             Produto p;
             ProdutoDAO pDAO = new ProdutoDAO();
             p = pDAO.getProdutoPorId(id);
+            total += p.getPreco() * quantidadeRepetida;
             int estoque = pDAO.getQuantidade(id);
             writer.println("<tr><td>" + p.getNome() + "</td><td>" + p.getPreco() + "</td><td>");
 
@@ -86,7 +91,9 @@ public class VerCarrinhoController {
             StaticDocs.quantidadesCarrinho.add(quantidadeRepetida);
         }
 
+
         writer.println("<td colspan=\"4\" style=\"text-align: center;\">");
+        writer.println("<h3>Total a ser pago: R$ " + total + "</h3>");
         writer.println("<button onclick=\"window.location.href='/listarProdutosCliente'\">Ver produtos</button>");
         writer.println("<button onclick=\"window.location.href='/finalizarCompra'\">Finalizar compra</button>");
         writer.println("<button onclick=\"window.location.href='home_cliente.html'\">Voltar para Home</button></td>");
