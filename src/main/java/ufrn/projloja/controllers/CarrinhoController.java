@@ -122,7 +122,6 @@ public class CarrinhoController {
             System.out.println("Produto: " + idProduto);
 
             idProduto = idProduto + "_";
-            //idProdutos = idProdutos.replaceFirst(idProduto, ""); // retira a primeira ocorrência da id do produto da string
 
             // Encontra a posição da primeira ocorrência do idProduto na string idProdutos
             StringBuilder idProdutosBuilder = new StringBuilder(idProdutos);
@@ -135,9 +134,9 @@ public class CarrinhoController {
                 // Atualiza a variável idProdutos com a nova string sem o idProduto
                 idProdutos = idProdutosBuilder.toString();
             }
+
             System.out.println("Cookie depois: " + idProdutos);
 
-            System.out.println("Cookie depois de percorrer: " + idProdutos);
             // Verifica se o carrinho ainda tem produtos
             if (idProdutos != "") { // Caso não tenha ficado vazio, instancia novamente o cookie com o resto dos ids
                 if (nomeCarrinho != null && !nomeCarrinho.isEmpty()) {
@@ -161,7 +160,6 @@ public class CarrinhoController {
             }
         }
     }
-
 
     @GetMapping("/finalizarCompra")
     public void finalizarCompra(HttpServletRequest request, HttpServletResponse response) throws IOException {
