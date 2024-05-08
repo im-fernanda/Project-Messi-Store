@@ -27,27 +27,20 @@
 3. Faça login.
 
 
-<h3>Prerequisites</h3>
-
-Here you list all prerequisites necessary for running your project. For example:
+<h3>Pré-requisitos</h3>
 
 - [SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html)
 
 
 <h3>Clonando</h3>
 
-Como clonar o projeto
 
 ```bash
 git clone https://github.com/im-fernanda/Project-Messi-Store
 ```
 
-
-
 <h2 id="colab">🤝 Colaboradores</h2>
-
-Special thank you for all people that contributed for this project.
-
+Um agradecimento especial a todas as pessoas que contribuíram para este projeto.
 <table>
   <tr>
     <td align="center">
