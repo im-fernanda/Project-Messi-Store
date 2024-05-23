@@ -11,17 +11,19 @@
     <b>Projeto que simula o funcionamento simples de uma loja que utiliza cookies para guardar o carrinho dos clientes e implementa filtros.</b>
 </p>
 
-<h2 id="technologies">💻 Tecnologias</h2>
+<h2 id="tech">💻 Tecnologias</h2>
 
 - Java
 - SpringBoot
 
 <h2 id="started">🚀 Instruções de uso</h2>
 
+Rode o arquivo SQL Banco de Dados no seu administrador de desenvolvimento para o PostgreSQL, criando assim o Banco de Dados inicial para testes. Com isso feito, siga os passos abaixo.
+
 1. Abra localhost:8080;
 2. Se deseja usar como cliente, crie uma conta. Se deseja usar como lojista, utilize as credenciais:
 
-       login: ferlojista
+       login: fer@loja
 
        senha: 123
 3. Faça login.
@@ -40,7 +42,6 @@ git clone https://github.com/im-fernanda/Project-Messi-Store
 ```
 
 <h2 id="colab">🤝 Colaboradores</h2>
-Um agradecimento especial a todas as pessoas que contribuíram para este projeto.
 
 <table>
   <tr>
@@ -54,9 +55,9 @@ Um agradecimento especial a todas as pessoas que contribuíram para este projeto
     </td>
     <td align="center">
       <a href="#">
-        <img src="https://p2.trrsf.com/image/fget/cf/1200/1600/middle/images.terra.com/2022/12/20/378982398-lionel-messi-world-cup-2022.jpg" width="75px" alt="Lionel Messi Picture"/><br>
+        <img src="https://avatars.githubusercontent.com/foioluan" width="100px" alt="Luan Profile Picture"/><br>
         <sub>
-          <b>Lionel Messi</b>
+          <b>Luan Veríssimo</b>
         </sub>
       </a>
     </td>
