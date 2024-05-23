@@ -10,6 +10,11 @@
 <p align="center">
     <b>Projeto que simula o funcionamento simples de uma loja que utiliza cookies para guardar o carrinho dos clientes e implementa filtros.</b>
 </p>
+<!--
+<p align="center">
+   <img src="https://github.com/im-fernanda/Project-Messi-Store/assets/118316479/b96b5a54-dd88-4038-a332-cbac89bd5c26.png" alt="Image Example" height="300px" width="800px">
+</p>
+--> 
 
 <h2 id="tech">💻 Tecnologias</h2>
 
