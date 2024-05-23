@@ -2,7 +2,7 @@
 <h1 align="center" style="font-weight: bold;">Messi Store 💻</h1>
 
 <p align="center">
- <a href="#tech">Technologias</a> • 
+ <a href="#tech">Tecnologias</a> • 
  <a href="#started">Instruções</a> •
  <a href="#colab">Colaboradores</a> 
 </p>
