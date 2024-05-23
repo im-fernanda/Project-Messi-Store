@@ -11,7 +11,7 @@
     <b>Projeto que simula o funcionamento simples de uma loja que utiliza cookies para guardar o carrinho dos clientes e implementa filtros.</b>
 </p>
 
-<h2 id="technologies">💻 Technologias</h2>
+<h2 id="technologies">💻 Tecnologias</h2>
 
 - Java
 - SpringBoot
