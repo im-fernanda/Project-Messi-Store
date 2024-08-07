@@ -1,14 +1,18 @@
+[JAVA_BADGE]:https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white
+[SPRING_BADGE]: https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white
 
-<h1 align="center" style="font-weight: bold;">Messi Store 💻</h1>
+<h1 align="center" style="font-weight: bold;"> Messi Store 💻</h1>
+
+![java][JAVA_BADGE]
+![spring][SPRING_BADGE]
 
 <p align="center">
- <a href="#tech">Tecnologias</a> • 
  <a href="#started">Instruções</a> •
  <a href="#colab">Colaboradores</a> 
 </p>
 
 <p align="center">
-    <b>Projeto que simula o funcionamento simples de uma loja que utiliza cookies para guardar o carrinho dos clientes e implementa filtros.</b>
+    <b>Projeto que simula o funcionamento simples de uma loja que utiliza cookies para guardar o carrinho dos clientes e implementa filtros de acordo com qual usuário está logado.</b>
 </p>
 <!--
 <p align="center">
@@ -16,10 +20,6 @@
 </p>
 --> 
 
-<h2 id="tech">💻 Tecnologias</h2>
-
-- Java
-- SpringBoot
 
 <h2 id="started">🚀 Instruções de uso</h2>
 
@@ -34,17 +34,9 @@ Rode o arquivo SQL Banco de Dados no seu administrador de desenvolvimento para o
 3. Faça login.
 
 
-<h3>Pré-requisitos</h3>
-
-- [SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html)
-
-
 <h3>Clonando</h3>
 
-
-```bash
-git clone https://github.com/im-fernanda/Project-Messi-Store
-```
+       $ git clone https://github.com/im-fernanda/Project-Messi-Store
 
 <h2 id="colab">🤝 Colaboradores</h2>
 
@@ -75,4 +67,4 @@ git clone https://github.com/im-fernanda/Project-Messi-Store
 
 [📝 How to create a Pull Request](https://www.atlassian.com/br/git/tutorials/making-a-pull-request)
 
-[💾 Commit pattern](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
+[Getting Started with SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html)
